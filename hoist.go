@@ -1,7 +1,7 @@
 package main
 
 import (
-  "github.com//jinzhu/gorm"
+  "github.com/jinzhu/gorm"
   "github.com/spf13/viper"
 )
 
