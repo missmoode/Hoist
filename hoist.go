@@ -1,7 +1,6 @@
 package main
 
 import (
-  "github.com/jinzhu/gorm"
   "github.com/spf13/viper"
   "fmt"
   "os"
