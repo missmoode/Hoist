@@ -2,4 +2,4 @@ language: go
 
 go:
   - "1.9.x"
-script: go test -v ./... && go build ./... -o hoist
+script: go test -v ./... && go build -o hoist ./...
