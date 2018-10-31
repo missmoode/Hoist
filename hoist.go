@@ -4,52 +4,51 @@ package main
 
 import "github.com/spf13/viper"
 import (
-  "fmt"
-  "os"
-  "strings"
-  "github.com/jinzhu/gorm"
-  "github.com/gin-gonic/gin"
-  "net/http"
-)
+	"fmt"
+	"net/http"
+	"strings"
 
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+)
 
 // Mastodon instance certificate
 type Instance struct {
-  gorm.Model
-  Address   string `gorm:"primary_key"`
-  Secret    string
+	gorm.Model
+	Address string `gorm:"primary_key"`
+	Secret  string
 }
 
-
 func main() {
-  loadConfig()
+	loadConfig()
 
-  host := viper.GetString("host")
-  port := viper.getInt("port")
-  siteURL := viper.GetString("url")
-  databaseConfig := viper.GetStringMapString("database")
+	host := viper.GetString("host")
+	port := viper.getInt("port")
+	siteURL := viper.GetString("url")
+	databaseConfig := viper.GetStringMapString("database")
 
-  // Connect to database
-  db, err := gorm.Open(databaseConfig["type"], databaseConfig["connectionString"])
-  if err != nil {
-    panic(fmt.Errorf("Couldn't open database connection: %s \n", err))
-  }
-  defer db.Close()
+	// Connect to database
+	db, err := gorm.Open(databaseConfig["type"], databaseConfig["connectionString"])
+	if err != nil {
+		panic(fmt.Errorf("Couldn't open database connection: %s \n", err))
+	}
+	defer db.Close()
 
-  db.AutoMigrate(&Instance{})
+	db.AutoMigrate(&Instance{})
 
-  router := gin.Default()
+	router := gin.Default()
 
-  router.GET("/auth/:instance`", func (c *gin.Context) {
-    address := strings.ToLower(c.Param("instance"))
+	router.GET("/auth/:instance`", func(c *gin.Context) {
+		address := strings.ToLower(c.Param("instance"))
 
-    var instance Instance
-    db.First(&instance, "address = ?", address)
+		var instance Instance
+		instance.
+			db.First(&instance, "address = ?", address)
 
-    if db.Address == "" {
-      response, err := http.Get(fmt.Sprintf(""))
-    }
-  })
+		if db.Address == "" {
+			response, err := http.Get(fmt.Sprintf(""))
+		}
+	})
 }
 
 // TODO: SSL cert
