@@ -1,0 +1,8 @@
+database:
+  dbname: hoist
+  password: password
+  sslmode: disable
+  user: hoist
+host: xwlocalhost
+port: 81
+url: http://hoist.amy.zone

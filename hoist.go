@@ -2,30 +2,23 @@ package main
 
 //bonk
 
-import "github.com/spf13/viper"
 import (
 	"fmt"
-	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
-
-// Mastodon instance certificate
-type Instance struct {
-	gorm.Model
-	Address string `gorm:"primary_key"`
-	Secret  string
-}
+import "./config"
+import "./models"
 
 func main() {
-	loadConfig()
+	config.Load()
 
-	host := viper.GetString("host")
-	port := viper.getInt("port")
-	siteURL := viper.GetString("url")
-	databaseConfig := viper.GetStringMapString("database")
+	// host := config.Viper.GetString("host")
+	// port := config.Viper.GetInt("port")
+	// siteURL := config.Viper.GetString("url")
+	databaseConfig := config.Viper.GetStringMapString("database")
 
 	// Connect to database
 	db, err := gorm.Open(databaseConfig["type"], databaseConfig["connectionString"])
@@ -34,19 +27,18 @@ func main() {
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&Instance{})
+	db.AutoMigrate(models.Instance{})
 
 	router := gin.Default()
 
 	router.GET("/auth/:instance`", func(c *gin.Context) {
 		address := strings.ToLower(c.Param("instance"))
 
-		var instance Instance
-		instance.
-			db.First(&instance, "address = ?", address)
+		var instance models.Instance
+		db.First(&instance, "address = ?", address)
 
-		if db.Address == "" {
-			response, err := http.Get(fmt.Sprintf(""))
+		if instance.Address == "" {
+			//response, err := http.Get(fmt.Sprintf(""))
 		}
 	})
 }
