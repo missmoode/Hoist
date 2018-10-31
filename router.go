@@ -22,5 +22,5 @@ func routerSetup(address string) {
 	router.GET("/authenticate/:instance", hello)
 
 	log.Fatal(http.ListenAndServe(address, router))
-	fmt.Println("HTTP server started at %v\n", address)
+	fmt.Printf("HTTP server started at %v\n", address)
 }
