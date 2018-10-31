@@ -12,4 +12,5 @@ deploy:
   file_glob: true
   file: dist/*
   on:
+    all_branches: true
     repo: amelinya/Hoist
