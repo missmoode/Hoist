@@ -10,13 +10,14 @@ jobs:
       script: babel src --presets=@babel/preset-env --out-dir lib
     - stage: package binaries
       script: pkg --targets latest-linux-x86 --out-path dist/ ./lib/app.js
-deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key:
-    secure: qvqabzmludX+8wYKP0lGaHDyCqkmGOLAojvPRcE0q7cP/jhEZrU3rP5cnn9GyUFcIroIt2X8o36fn66F66mN4ZAgAtvN7WxdhpTwxYhAMLdnUtsYFBJ5Rk0jGHbzF6XnKlk3Aq+pr1RlOhje5PhgDoIQrnOxTRhBEWNhCIx6Z/+j4KIps+hZSfl7IASF3wE/W2aMcL+OGmit3CiRPhWNdDmU2w4+ndK+fj4i5g0aCQLRJIR+eJmYFbcaDdftpZD9W3usacKHATDsujEk63GCUzM9pko+R/n3/trqTDE1cL7AP3D81h0V22GZT3lBJOk9ZIe7CUUD4qINbmK2pXFOBm4qo2pKpBI36xCjv7tTbn2aUUIEdHkOBJEZS4lLHIG43linL523Hsvl/zEll8Dp5pGAx6MN5C6nzXTgw8wIsdC7n49Xlukd3Xn/HDHmJ6+KmS0pU3K20RPYtrmb8ycbv0lFfSL/79+YIYNvL3EWvXliIl6oLU4B70/5fatpYOyDbTSjLztR12ogP/RYfIzhZ53jMlkej3R8vnow84VhpIX63PbiL+mMlcNBtZIFmKFuiVWoHtrN1Zaf81k+RlEm4tls5m3GoDsYUZCUQegMgFoLZPEFzlErTS3/7trgiWsHmEY2AssCY8DIvgWq9Cv03BhyS7nawXf1dUCZHR+w2t0=
-  file_glob: true
-  file: dist/*
-  on:
-    repo: amelinya/Hoist
-    tags: true
+    - stage: publish binaries
+      deploy:
+        provider: releases
+        skip_cleanup: true
+        api_key:
+          secure: qvqabzmludX+8wYKP0lGaHDyCqkmGOLAojvPRcE0q7cP/jhEZrU3rP5cnn9GyUFcIroIt2X8o36fn66F66mN4ZAgAtvN7WxdhpTwxYhAMLdnUtsYFBJ5Rk0jGHbzF6XnKlk3Aq+pr1RlOhje5PhgDoIQrnOxTRhBEWNhCIx6Z/+j4KIps+hZSfl7IASF3wE/W2aMcL+OGmit3CiRPhWNdDmU2w4+ndK+fj4i5g0aCQLRJIR+eJmYFbcaDdftpZD9W3usacKHATDsujEk63GCUzM9pko+R/n3/trqTDE1cL7AP3D81h0V22GZT3lBJOk9ZIe7CUUD4qINbmK2pXFOBm4qo2pKpBI36xCjv7tTbn2aUUIEdHkOBJEZS4lLHIG43linL523Hsvl/zEll8Dp5pGAx6MN5C6nzXTgw8wIsdC7n49Xlukd3Xn/HDHmJ6+KmS0pU3K20RPYtrmb8ycbv0lFfSL/79+YIYNvL3EWvXliIl6oLU4B70/5fatpYOyDbTSjLztR12ogP/RYfIzhZ53jMlkej3R8vnow84VhpIX63PbiL+mMlcNBtZIFmKFuiVWoHtrN1Zaf81k+RlEm4tls5m3GoDsYUZCUQegMgFoLZPEFzlErTS3/7trgiWsHmEY2AssCY8DIvgWq9Cv03BhyS7nawXf1dUCZHR+w2t0=
+        file_glob: true
+        file: dist/*
+        on:
+          repo: amelinya/Hoist
+          tags: true
