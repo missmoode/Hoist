@@ -1,5 +1,9 @@
 package main
 
+import "github.com/spf13/viper"
+import "fmt"
+import "os"
+
 func loadConfig() {
   // Configuration Defaults
   viper.SetDefault("database", map[string]string{"type": "postgres", "connectionString": "user=lunar password=password dbname=lunar host=localhost sslmode=disable"})
