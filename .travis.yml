@@ -1,39 +1,18 @@
 language: go
-sudo: false
-matrix:
-  include:
-    # "1.x" always refers to the latest Go version, inc. the patch release.
-    # e.g. "1.x" is 1.11 until 1.11.1 is available.
-    - go: 1.x
-      env: LATEST=true
-
+sudo: true
 before_install:
-  # gox simplifies building for multiple architectures
-  - go get github.com/mitchellh/gox
-
-install:
-  - # skip
-
-script:
-  - go get -t -v ./...
-  - go vet $(go list ./... | grep -v /vendor/)
-  - go test -v -race ./...
-  # Only build binaries from the latest Go release.
-  - if [ "${LATEST}" = "true" ]; then gox -os="linux" -arch="amd64 386" -output="logshare.." -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
-
+- go get github.com/mitchellh/gox
+- chmod +x build.sh
+go:
+- tip
+script: "./build.sh"
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    # Your *encrypted* GitHub key, as the output of the Travis CI CLI tool.
     secure: qvqabzmludX+8wYKP0lGaHDyCqkmGOLAojvPRcE0q7cP/jhEZrU3rP5cnn9GyUFcIroIt2X8o36fn66F66mN4ZAgAtvN7WxdhpTwxYhAMLdnUtsYFBJ5Rk0jGHbzF6XnKlk3Aq+pr1RlOhje5PhgDoIQrnOxTRhBEWNhCIx6Z/+j4KIps+hZSfl7IASF3wE/W2aMcL+OGmit3CiRPhWNdDmU2w4+ndK+fj4i5g0aCQLRJIR+eJmYFbcaDdftpZD9W3usacKHATDsujEk63GCUzM9pko+R/n3/trqTDE1cL7AP3D81h0V22GZT3lBJOk9ZIe7CUUD4qINbmK2pXFOBm4qo2pKpBI36xCjv7tTbn2aUUIEdHkOBJEZS4lLHIG43linL523Hsvl/zEll8Dp5pGAx6MN5C6nzXTgw8wIsdC7n49Xlukd3Xn/HDHmJ6+KmS0pU3K20RPYtrmb8ycbv0lFfSL/79+YIYNvL3EWvXliIl6oLU4B70/5fatpYOyDbTSjLztR12ogP/RYfIzhZ53jMlkej3R8vnow84VhpIX63PbiL+mMlcNBtZIFmKFuiVWoHtrN1Zaf81k+RlEm4tls5m3GoDsYUZCUQegMgFoLZPEFzlErTS3/7trgiWsHmEY2AssCY8DIvgWq9Cv03BhyS7nawXf1dUCZHR+w2t0=
-  file:
-  # The names of the binaries to output, based on the -output template passed to gox.
-  - logshare.linux.amd64
-  - logshare.linux.386
+  file_glob: true
+  file: target/*
   on:
-    # What to repository to build
     repo: amelinya/Hoist
-    # Only build binaries for tagged commits
     tags: true
-    condition: $LATEST = true

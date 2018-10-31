@@ -15,7 +15,9 @@ func main() {
   viper.SetDefault("database.password", "password")
   viper.SetDefault("database.dbname", "hoist")
   viper.SetDefault("database.sslmode", "disable")
+  viper.SetDefault("url", "http://hoist.amy.zone")
   viper.SetDefault("host", "localhost")
+  viper.SetDefault("port", 81)
 
   //Make configuration if it doesn't exist and read it
   viper.SetConfigName("config")
@@ -28,4 +30,9 @@ func main() {
   if err != nil {
     panic(fmt.Errorf("Couldn't load config: %s \n", err))
   }
+
+  host := viper.GetString("host")
+  port := viper.getInt("port")
+
+  siteURL = viper.GetString("url")
 }
