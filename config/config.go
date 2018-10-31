@@ -11,10 +11,6 @@ var Viper = viper.GetViper()
 func Load() {
 	// Configuration Defaults
 	viper.SetDefault("database", map[string]string{"type": "postgres", "connectionString": "user=lunar password=password dbname=lunar host=localhost sslmode=disable"})
-	viper.SetDefault("database.user", "hoist")
-	viper.SetDefault("database.password", "password")
-	viper.SetDefault("database.dbname", "hoist")
-	viper.SetDefault("database.sslmode", "disable")
 	viper.SetDefault("url", "http://hoist.amy.zone")
 	viper.SetDefault("host", "xwlocalhost")
 	viper.SetDefault("port", 81)

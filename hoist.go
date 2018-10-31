@@ -15,15 +15,14 @@ import "./models"
 func main() {
 	config.Load()
 
-	// host := config.Viper.GetString("host")
-	// port := config.Viper.GetInt("port")
-	// siteURL := config.Viper.GetString("url")
+	host := config.Viper.GetString("host")
+	port := config.Viper.GetInt("port")
 	databaseConfig := config.Viper.GetStringMapString("database")
 
 	// Connect to database
 	db, err := gorm.Open(databaseConfig["type"], databaseConfig["connectionString"])
 	if err != nil {
-		panic(fmt.Errorf("Couldn't open database connection: %s \n", err))
+		panic(fmt.Errorf("Couldn't open database connection: %s", err))
 	}
 	defer db.Close()
 
@@ -41,6 +40,8 @@ func main() {
 			//response, err := http.Get(fmt.Sprintf(""))
 		}
 	})
+
+	router.Run(fmt.Sprintf("%s:%d", host, port))
 }
 
 // TODO: SSL cert
