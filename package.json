@@ -6,10 +6,20 @@
   "repository": "https://github.com/amelinya/Hoist.git",
   "author": "Amy Harris <42555115+amelinya@users.noreply.github.com>",
   "license": "MIT",
+  "scripts": {
+    "run": "babel src --presets=@babel/preset-env --out-dir lib  && node lib/hoist.js",
+    "build": "babel src --presets=@babel/preset-env --out-dir lib && pkg --targets latest-linux-x86,latest-win-x64 --out-path dist/ ./lib/hoist.js"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "pkg": "^4.3.4"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "pg": "^7.6.0",
+    "request": "^2.88.0",
+    "sequelize": "^4.41.0"
   }
 }
