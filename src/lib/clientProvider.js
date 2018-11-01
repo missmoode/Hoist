@@ -1,6 +1,6 @@
 import app from '../hoist.js'
-import isInstance from './urlTest.js';
-
+import {isInstance, isHTTPS} from './urlTest.js';
+import request from 'request'
 
 
 export default function getInstance(address) {
@@ -10,28 +10,21 @@ export default function getInstance(address) {
             }).then(instance => {
                 if (instance === null) {
                     // Haven't met this instance, try and say hi
-
-                    isInstance(address)
-                    .then(isInst => {
-                        if (!isInst) return reject("not an instance")
+                    return Promise.all([isInstance(address), isHTTPS(address)])
+                    .then(values => {
+                        if (!values[0]) return reject("not an instance")
                         
-                        request({
-                            url: `http://${address}/api/v1/apps`,
-                            method: "POST",
-                            json: {
-                                "client_name": "Sail App",
-                                "redirect_uris": ["hoist.getsail.app/redirect"],
-                                "scopes": "write read follow push",
-                                "website": "http://getsail.app"
-                            }
-                        }, (error, response, body) => {
+                        request.post({url: `${values[1] ? 'https' : 'http'}://${address}/api/v1/apps`, followAllRedirects: true, followOriginalHttpMethod: true, json: true, body: {
+                            "client_name": "Sail App",
+                            "redirect_uris": "https://hoist.getsail.app/authentication/authorize",
+                            "scopes": "write read follow push",
+                            "website": "http://getsail.app"
+                       }}, (error, response, body) => {
                             if (!error && response.statusCode == 200) {
-                                let response = JSON.parse(body)
-                                console.log(response)
                                 let instance = app.database.Instance.build({
                                     address: address,
-                                    clientID: response['client_id'],
-                                    clientSecret: response['client_secret']
+                                    clientID: body['client_id'],
+                                    clientSecret: body['client_secret']
                                 })
 
                                 instance.save()

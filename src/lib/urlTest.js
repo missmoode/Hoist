@@ -1,6 +1,8 @@
 import request from "request";
 
-export default function isInstance(address) {
+//TODO: Test ifHTTP or HTTPs
+
+export function isInstance(address) {
     return new Promise((resolve, reject) => {
         request.get(`http://${address}/api/v1/instance/`)
         .on('response', response => {
@@ -8,6 +10,15 @@ export default function isInstance(address) {
         })
         .on('error', err => {
             reject(err)
+        })
+    })
+}
+
+export function isHTTPS(address) {
+    return new Promise((resolve, reject) => {
+        request.get(`http://${address}`, (err, response, body) => {
+            if (err) return reject(err)
+            resolve(response.request.uri.protocol === 'https:')
         })
     })
 }

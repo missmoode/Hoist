@@ -29,6 +29,7 @@ export default class Database {
 
         for (let model in models) {
             this[model] = sequelize.define(model.toLowerCase(), models[model])
+            this[model].sync()
         }
     }
 }
