@@ -3,10 +3,8 @@ sudo: true
 node_js: node
 before_script:
   - yarn install
-  - dpkg --add-architecture i386
-  - apt-get update
-  - apt-get install -y libc6:i386 libstdc++6:i386
-script: ./build.sh
+script:
+  - ./build.sh
 
 deploy:
   provider: releases
