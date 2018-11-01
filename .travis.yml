@@ -1,6 +1,7 @@
 language: node_js
 sudo: true
-node_js: "11"
+node_js:
+  - "7"
 before_script:
   - yarn install
 script:
@@ -15,4 +16,4 @@ deploy:
   file: dist/*
   on:
     repo: amelinya/Hoist
-    branch: release
+    tags: true
