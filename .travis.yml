@@ -15,4 +15,4 @@ deploy:
   file: dist/*
   on:
     repo: amelinya/Hoist
-    tags: true
+    branch: release
