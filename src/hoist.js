@@ -4,6 +4,7 @@ import fs from 'fs'
 import https from 'https'
 
 import authentication from './api/authentication.js'
+import instances from './api/instances.js'
 
 import Database from './database';
 
@@ -13,6 +14,7 @@ class App {
         this.express = Express()
 
         this.express.use('/authentication', authentication)
+        this.express.use('/instances', instances)
 
         this.httpServer = https.createServer(credentials, this.express)
 
