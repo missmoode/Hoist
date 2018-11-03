@@ -22,7 +22,7 @@ router.get("/authorize", (req, res) => {
                 if (err) return res.status(500).json({error: "Internal Server Error"})
                 if (res2.statusCode === 200) {
                     let json = JSON.parse(body)
-                    res.redirect(`sail://oauth/addToken?token=${json.access_token}`)
+                    res.redirect(`sail://oauth/addToken?address=${state.address}&token=${json.access_token}`)
                 } else {
                     res.status(500).json({error: "Internal Server Error"})
                 }
