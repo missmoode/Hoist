@@ -1,6 +1,6 @@
 import express from 'express'
 import getInstance from '../lib/clientProvider';
-import { request } from 'http';
+import request from 'request';
 
 const router = express.Router()
 
@@ -14,16 +14,21 @@ router.get("/authorize", (req, res) => {
         getInstance(state.address).then(instance => {
             request.post({url: `${state.scheme}://${state.address}/oauth/token`, form: {
                 "grant_type": "authorization_code",
-                "scopes": "write read follow push",
+                "code": code,
                 "redirect_uri": "https://hoist.getsail.app/authentication/authorize",
-                "client_id": instance.client_id,
-                "client_secret": instance.client_secret
-            }}, (err, request, body) => {
+                "client_id": instance.clientID,
+                "client_secret": instance.clientSecret
+            }}, (err, res2, body) => {
                 if (err) return res.status(500).json({error: "Internal Server Error"})
+                if (res2.statusCode === 200) {
+                    let json = JSON.parse(body)
+                    res.redirect(`sail://oauth/addToken?token=${json.access_token}`)
+                } else {
+                    res.status(500).json({error: "Internal Server Error"})
+                }
 
-                res.send(body)
             })
-        }).catch((err) => {
+        }).catch(err => {
             return res.status(500).json({error: "Internal Server Error"})
         })
     }
