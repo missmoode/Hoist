@@ -12,7 +12,7 @@ router.get("/authorize", (req, res) => {
         let code = req.query.code
         let state = JSON.parse(req.query.state)
         getInstance(state.address).then(instance => {
-            request.post({url: `${state.scheme}://${state.address}/oauth/token`, form: {
+            request.post({url: `${state.address}/oauth/token`, form: {
                 "grant_type": "authorization_code",
                 "code": code,
                 "redirect_uri": "https://hoist.getsail.app/authentication/authorize",

@@ -10,11 +10,11 @@ export default function getInstance(address) {
             }).then(instance => {
                 if (instance === null) {
                     // Haven't met this instance, try and say hi
-                    return Promise.all([isInstance(address), isHTTPS(address)])
-                    .then(values => {
-                        if (!values[0]) return reject("not an instance")
+                    return isInstance(address)
+                    .then(isInstance => {
+                        if (!isInstance) return reject("not an instance")
                         
-                        request.post({url: `${values[1] ? 'https' : 'http'}://${address}/api/v1/apps`, followAllRedirects: true, followOriginalHttpMethod: true, json: true, body: {
+                        request.post({url: `${address}/api/v1/apps`, followAllRedirects: true, followOriginalHttpMethod: true, json: true, body: {
                             "client_name": "Sail App",
                             "redirect_uris": "https://hoist.getsail.app/authentication/authorize",
                             "scopes": "write read follow push",

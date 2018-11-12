@@ -13,12 +13,3 @@ export function isInstance(address) {
         })
     })
 }
-
-export function isHTTPS(address) {
-    return new Promise((resolve, reject) => {
-        request.get(`http://${address}`, (err, response, body) => {
-            if (err) return reject(err)
-            resolve(response.request.uri.protocol === 'https:')
-        })
-    })
-}
